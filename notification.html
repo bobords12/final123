@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notification</title>
+  <link rel="icon" type="image/x-icon" href="knowmed.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: url("back.png") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    header.navbar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      background-color: #0082ca;
+      padding: 2rem 2rem;
+      position: relative;
+      z-index: 1000;
+      gap: 1rem;
+    }
+
+    .center-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      pointer-events: none;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 3rem 2rem;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(200, 200, 200, 0.3);
+      animation: fadeIn 0.7s ease-out;
+    }
+
+    .main-container h2 {
+      font-size: 2rem;
+      color: #3a7073;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .notification {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    .notification.unread {
+      background-color: #fff5e6;
+      font-weight: 600;
+    }
+
+    .notification.read {
+      background-color: #f1f1f1;
+      color: #666;
+      font-weight: normal;
+    }
+
+    .notif-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notif-time {
+      text-align: right;
+      font-size: 0.9rem;
+      color: gray;
+    }
+
+    .delete-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .dashboard-btn-container {
+      width: 100%;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-btn {
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #0082ca;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 130, 202, 0.4);
+      transition: background-color 0.3s ease;
+    }
+
+    .dashboard-btn:hover {
+      background-color: #006bb3;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: white;
+      color: #888;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 1.5rem;
+      }
+
+      .notification {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .notif-time {
+        margin-top: 0.5rem;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="center-title">Notification</div>
+</header>
+
+<main>
+  <div class="main-container">
+    <div class="dashboard-btn-container">
+      <button class="dashboard-btn" onclick="window.location.href='dashboard.html'">Back</button>
+    </div>
+
+    <h2>🔔 Medicine Notification</h2>
+
+    <div class="notification unread">
+      <div class="notif-left">
+        <input type="checkbox" onchange="toggleRead(this)">
+        <span>Take your morning medicine</span>
+      </div>
+      <div class="notif-time">
+        <div>May 28, 2025</div>
+        <div>07:00 AM</div>
+      </div>
+      <button class="delete-btn">Delete</button>
+    </div>
+
+    <div class="notification read">
+      <div class="notif-left">
+        <input type="checkbox" checked onchange="toggleRead(this)">
+        <span>Drink Vitamin C</span>
+      </div>
+      <div class="notif-time">
+        <div>May 27, 2025</div>
+        <div>10:00 AM</div>
+      </div>
+      <button class="delete-btn">Delete</button>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  In-depth Knowledge, Medication Made Simple
+</footer>
+<script src="remindersAlarm.js"></script>
+
+<script>
+  function toggleRead(checkbox) {
+    const notif = checkbox.closest('.notification');
+    if (checkbox.checked) {
+      notif.classList.remove('unread');
+      notif.classList.add('read');
+    } else {
+      notif.classList.remove('read');
+      notif.classList.add('unread');
+    }
+  }
+
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const notif = e.target.closest('.notification');
+      notif.remove();
+    });
+  });
+</script>
+
+</body>
+</html>
